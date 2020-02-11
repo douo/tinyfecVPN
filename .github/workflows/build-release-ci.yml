@@ -38,20 +38,11 @@ jobs:
           make init
       - name: Compile
         run: |
-          make amd64
+          make amd64 OPT=-DNOLIMIT
           ls -al
 
-      # - name: Upload bin directory
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: OpenWrt_directory
-      #     path: ./bin
-
-      # - name: Prepare artifact
-      #   run: find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}
-
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: OpenWrt firmware
-      #     path: ./bin/targets/
+      - name: Upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: artifact
+          path: ./tinyvpn_amd64
