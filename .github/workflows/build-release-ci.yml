@@ -1,0 +1,57 @@
+#
+# This is free software, lisence use MIT.
+#
+# Copyright (C) 2019 P3TERX <https://p3terx.com>
+# Copyright (C) 2019 KFERMercer <KFER.Mercer@gmail.com>
+#
+# <https://github.com/KFERMercer/OpenWrt-CI>
+#
+
+name: OpenWrt-CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: master
+
+      - name: Env setup
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo -E apt-get update
+          sudo -E apt-get -y install build-essential
+          ls -al
+      - name: Update
+        run: |
+          make init
+      - name: Compile
+        run: |
+          make amd64
+          ls -al
+
+      # - name: Upload bin directory
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: OpenWrt_directory
+      #     path: ./bin
+
+      # - name: Prepare artifact
+      #   run: find ./bin/targets/ -type d -name "packages" | xargs rm -rf {}
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: OpenWrt firmware
+      #     path: ./bin/targets/
